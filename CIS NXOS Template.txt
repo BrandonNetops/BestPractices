@@ -1,0 +1,447 @@
+### 1.1.1.1
+feature tacacs+ 
+tacacs-server host 3.4.5.6 key 7 "vkqjcet" 
+tacacs-server host 4.5.6.7 key 7 "vkqjgtcjjnod" 
+!
+aaa group server tacacs+ TACACSGROUP 
+ server 3.4.5.6 
+ server 4.5.6.7
+!
+aaa authentication login default group TACACSGROUP local
+aaa authentication login console group TACACSGROUP local
+no aaa user default-role
+login on-success log
+
+
+
+
+### 1.1.1.2
+username djadmin sshkey file bootflash:dj_rsa.pub
+#or alternatively, the ssh key can be defined in the username configuration line: 
+switch(config)# username djadmin sshkey ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAy19oF6QaZl9G+3f1XswK3OiW4H7YyUyuA50rv7gsEPjhOBYmsi6PAVKui1nIf/DQhum+lJNqJP/eLowb7ubO+lVKRXFY/G+lJNIQW3g9igG30c6k6+
+
+
+
+### 1.1.1.3
+radius-server host 3.4.5.6 key 7 "vkqjcet" authentication accounting 
+radius-server host 4.5.6.7 key 7 "vkqjgtcjjnod" authentication accounting
+! 
+aaa group server radius RADIUSGROUP 
+ server 3.4.5.6 
+ server 4.5.6.7
+!
+aaa authentication login default group RADIUSGROUP local
+aaa authentication login console group RADIUSGROUP local
+no aaa user default-role
+login on-success log
+
+
+
+### 1.1.2.1
+line vty
+
+### 1.2.1
+ip access-list ACL-MGT
+ remark ** access-class ACL
+ permit ip 192.168.12.0/24 any 
+ deny ip any any log
+!
+line vty
+ access-class ACL-MGT in
+ 
+ 
+### 1.2.2
+system login block-for 120 attempts 5 within 120
+
+### 1.2.3
+ssh login-attempts 3
+
+### 1.2.4
+line console
+ exec-timeout 10
+
+### 1.2.5
+line vty
+ exec-timeout 10
+
+### 1.2.6
+line vty 
+ session-limit 16
+
+### 1.2.7
+ no feature telnet
+ 
+### 1.3.1
+banner motd ^ 
+***********************> W A R N I N G <************************
+
+                            WARNING!
+            This computer system is private property.
+
+       All data comunications involving this device are logged.
+
+       By accessing and using this device you are consenting 
+    to monitoring and information retrieval for law enforcement
+                       and other purposes.
+          
+      Users should have no expectation of privacy in regard to
+        any communication on or information stored within
+      the system, including information stored on the network
+          and stored locally on the hard drive or other
+                   media in use with this unit
+              (e.g., floppy drives, CD-ROMS, etc.).
+
+****************************************************************
+^
+
+### 1.3.2
+banner exec ^ 
+***********************> W A R N I N G <************************
+
+                            WARNING!
+            This computer system is private property.
+
+       All data comunications involving this device are logged.
+
+       By accessing and using this device you are consenting 
+    to monitoring and information retrieval for law enforcement
+                       and other purposes.
+          
+      Users should have no expectation of privacy in regard to
+        any communication on or information stored within
+      the system, including information stored on the network
+          and stored locally on the hard drive or other
+                   media in use with this unit
+              (e.g., floppy drives, CD-ROMS, etc.).
+
+****************************************************************
+^
+
+### 1.4.1
+password strength-check
+
+
+### 1.4.2
+feature password encryption aes
+key config-key ascii 
+New Master Key: 
+Retype Master Key: 
+
+
+### 1.4.3
+userpassphrase default-warntime 10 switch
+userpassphrase default-gracetime 10 switch
+userpassphrase default-lifetime 180
+
+
+### 1.4.4
+userpassphrase min-length 12 max-length 127
+
+### 1.5.1
+snmp-server community <SomeComplexString> ro
+
+### 1.5.2
+
+iP access list ACL-IPV4-SNMPv2 
+ permit udp 1.2.3.4/32 3.4.5.6/32 eq snmp 
+ permit udp 1.2.3.8/2 3.4.5.6/32 eq snmp 
+ deny ip any any log
+!
+snmp-server community somecomplexstring group network-operator
+snmp-server community somecomplexstring use-ipv4acl ACL-IPV4-SNMPv2
+
+
+### 1.5.3
+snmp-server host 1.2.3.4 traps version 3 priv <SNMPv3_UserName>
+snmp-server globalEnforcePriv
+snmp-server user SNMPv3_UserName network-admin auth sha 0x12624c4dcb90cffeb43a1177324f547d priv 0x12624c4dcb90cffeb43a1177324f547d localizedkey
+snmp-server host 1.2.3.4 traps version 3 priv <SNMPv3_UserName>
+
+### 1.5.4
+snmp-server enable traps
+snmp-server enable traps aaa
+snmp-server enable traps entity
+snmp-server enable traps entity fru
+snmp-server enable traps license
+snmp-server enable traps link
+CISCO-PSM-MIB
+snmp-server enable traps port-security
+snmpv2-MIB 
+snmp-server enable traps snmp snmp-server enable traps 
+snmp authentication
+snmp-server enable traps fcc
+snmp-server enable traps fcdomain
+snmp-server enable traps fcns
+snmp-server enable traps fcs discovery-complete snmp-server enable traps fcs request-reject
+snmp-server enable traps fdmi
+snmp-server enable traps fspf
+snmp-server enable traps port-security
+snmp-server enable traps rscn 
+snmp-server enable traps rscn els 
+snmp-server enable traps rscn ils
+snmp-server enable traps zone
+snmp-server enable traps zone default-zone-behavior-change
+snmp-server enable traps zone merge-failure
+snmp-server enable traps zone merge-success
+snmp-server enable traps zone request-reject
+
+
+### 1.5.5
+snmp-server source-interface traps mgmt0 snmp-server source-interface informs mgmt0 snmp-server host 1.2.3.4 source-interface loopback0
+
+### 1.5.6
+# <No SNMP RW Communities - nothing to do>
+
+### 1.6.1
+logging level all <logging level> 
+logging source-interface <interface name>
+logging server <server ip address or name>
+
+### 1.6.2
+login level authpriv 5
+
+### 1.6.3
+feature netflow 
+flow exporter FLOW-EXPORT
+ destination 10.10.10.10
+ transport udp 9996
+ source mgmt0
+ version 9
+ option exporter-stats timeout 120
+ option interface-table timeout 120
+flow record FLOW-RECORD match ipv4 source address
+ match ipv4 destination address
+ match transport source-port
+ match transport destination-port
+ collect routing source as
+ collect routing destination as
+ collect transport tcp flags
+ collect counter bytes
+ collect counter packets
+sampler FLOWSAMPLER01
+ mode 8 out-of 64
+flow monitor FLOW-MONITOR
+ record FLOW-RECORD
+ exporter FLOW-EXPORT
+ interface Vlan9
+ ip flow monitor FLOW-MONITOR input sampler FLOWSAMPLER01
+ 
+ 
+### 1.6.4 Configure Logging Timestamps < This is default)
+ logging timestamp seconds
+
+
+### 1.7.1 Configure at least 2 external NTP Servers
+ntp server 13.86.101.172 use-vrf management
+ntp server 132.163.97.6 use-vrf management
+ntp server 132.246.11.231 use-vrf management
+ntp source-interface mgmt0
+
+
+### 1.7.2 Configure a Time Zone
+clock timezone EST -5 0
+
+### 1.7.3 If a Local Time Zone is used, Configure Daylight Savings
+clock summer-time EDT 2 Sun Mar 02:00 1 Sun Nov 02:00 60
+
+
+### 1.7.4 Configure NTP Authentication
+ntp server 132.246.11.231 use-vrf management key 42
+ntp source-interface mgmt0
+ntp authenticate 
+ntp authentication-key 42 md5 pu-slp-pwb 7 ntp trusted-key 42
+
+
+### 1.8.1 Disable Power on Auto Provisioning (POAP)
+no boot poap enable
+
+### 1.8.2 Disable iPXE (Pre-boot eXecution Environment) (This is default)
+boot order bootflash
+
+### 1.8.3 Set SSH Key Modulus Length (must be console)
+no feature ssh switch
+ssh key rsa 2048 force
+feature ssh
+
+### 1.9 Use Dedicated "mgmt" Interface and VRF for Administrative Functions (should be set above)
+snmp-server source-interface traps mgmt0 
+snmp-server source-interface informs mgmt0 
+snmp-server host 1.2.3.4 source-interface mgmt0 
+ntp source-interface mgmt0 
+logging source-interface mgmt0
+
+###  2.1.1  Copp Control Plane Policing
+#Should be default strict but verify with sho copp status
+
+
+###  3.1.1.1 Configure EIGRP Authentication on all EIGRP Routing Devices
+router eigrp [instance-tag] 
+ address-family {ipv4 | ipv6} unicast 
+ authentication key-chain [key-chain]
+ authentication mode md5
+
+#Next assign the interface: 
+ interface [interface-type slot/port]
+ router eigrp [instance-tag]
+ authentication key-chain eigrp [instance-tag key-chain] 
+ authentication mode eigrp [instance-tag] md5
+
+### 3.1.1.2 Configure EIGRP Passive interfaces for interfaces that do not have peers
+interface Vlan1
+ ip passive-interface eigrp 10
+
+### 3.1.1.3 Configure EIGRP log-adjacency-changes
+router eigrp <eigrp process tag>
+ log-adjacency-changes
+
+### 3.1.2.1 Configure BGP to Log Neighbor Changes
+router bgp 65520
+ router-id 10.10.10.10
+ neighbor 10.10.10.11 remote-as 65521
+ log-neighbor-changes
+
+### 3.1.2.2 If Possible, Limit the BGP Routes Accepted from Peers
+ip prefix-list PL_PEERNAME_PERMIT_SUBNETS description Permitted Subnets from Peer PEERNAME
+ip prefix-list PL_PEERNAME_PERMIT_SUBNETS permit 10.11.11.0/24
+!
+route-map RM_BGP_PEERNAME_IN permit 10
+ match ip address prefix-list PL_PEERNAME_PERMIT_SUBNETS
+!
+router bgp 65520
+ route-map route-map RM_BGP_PEERNAME_IN in
+
+### 3.1.2.3 Configure BGP Authentication
+router bgp 65520
+ password *****
+
+
+### 3.1.3.1 OSPF set Interfaces with no Peers to Passive-Interface
+router ospf 10 router-id 10.10.10.10
+ interface Vlan1
+ ip ospf passive-interface
+
+### 3.1.3.2 Authenticate OSPF peers with MD5 authentication keys
+interface <interfacename>
+ ip ospf authentication message-digest
+ ip ospf authentication key-chain <OSPF Key-Chain name>
+
+### 3.1.3.3 Log OSPF Adjacency Changes
+router ospf <Process tag>
+ log-adjacency-changes
+
+### 3.1.4.1 If VLAN interfaces have IP addreses, configure anti spoofing / ingress filtering protections
+interface Vlan X
+ ip verify unicast source reachable-via rx
+
+### 3.1.4.2 Create and use a single Loopback Address for Routing Protocol Peering
+int loopback 0
+ ip address 10.11.11.1 255.255.255.252
+
+### 3.1.4.3 Use Unicast Routing Protocols
+ # Nothing to do here
+
+### 3.1.4.4 Configure HSRP protections
+interface Vlan1
+ hsrp version 2
+ hsrp 1
+  authentication md5 key-chain HSRP-KEYCHAIN
+
+### 3.2.1.1 Configure RA Guard
+ipv6 nd raguard policy RAGuardPol01
+ device-role router
+ hop-limit minimum 3
+ managed-config-flag on
+ other-config-flag on
+ router-preference maximum high
+ trusted-port
+
+
+### 3.2.2 Disable ICMP Redirects on all Layer 3 Interfaces
+int vlan x
+ no ip redirects
+
+### 3.2.3 Disable Proxy ARP on all Layer 3 Interfaces
+int vlan x
+ no ip proxy-arp 
+
+
+### 3.2.4 Disable IP Directed Broadcasts on all Layer 3 Interfaces
+int vlan x
+ no ip directed-broadcast
+
+### 3.2.5 Disable IP Source-Routing
+int vlan x
+ no ip source-route
+
+### 3.3.1 Configure DHCP Trust
+ip dhcp snooping
+ip dhcp snooping vlan 100,200,250-252
+!
+interface port-channel x
+ ip dhcp snooping trust
+
+
+### 3.3.2 Configure Storm Control
+interface Ethernet1/6
+ storm-control broadcast level pps 1000
+ storm-control multicast level pps 1000
+ storm-control action shutdown
+
+### 3.4.1 Configure LLDP (if needed)
+## Leave it disabled unless needed
+
+feature lldp
+or
+no feature lldp
+
+
+### 3.4.2 Configure CDP (if needed)
+cdp enable
+
+
+### 3.5.1 Basic Fiber Channel Configuration (if needed)
+feature fcoe
+int e1/1
+ fcoe mode on
+ priority-flow-control mode auto
+
+### 3.5.2 Configure FCoE Zoning
+vsan database switch
+ vsan 101
+ vsan 101 name HOST_X_SAN_Y
+!
+interface vfc 1001
+ bind mac-address 00:01:0b:00:00:02 
+ int vfc 1002
+ bind mac-address 00:01:0b:00:00:08
+!
+int vfc 1003
+ bind interface e 1/4
+!
+vsan database
+ vsan 101 interface vfc 1001
+ vsan 101 interface vfc 1002
+ vsan 101 interface vfc 1003
+
+### 4.1 Configure Local Configuration Backup Schedule
+scheduler job name [local backup]
+ copy running-config startup-config
+scheduler schedule name [backups]
+ schedule name [backups]
+ time weekly [day 00:00]
+
+### 4.2 Configure a Remote Backup Schedule
+Scheduler job name [backup-cfg]
+ copy running-config tftp://1.2.3.4/$(SWITCHNAME)-cfg.$(TIMESTAMP) vrf management
+scheduler aaa-authentication username <username> password <some complex password>
+Scheduler job name <backup-cfg>
+copy running-config scp://1.2.3.4/$(SWITCHNAME)-cfg.$(TIMESTAMP) vrf management
+!
+scheduler schedule name [backups]
+ schedule name [backups]
+ job name <backup-cfg> 
+ time weekly [day 00:00]
+
+### 4.3 Configure Alerts on all Configuration Changes
+## Need a 3rd party for this
+
